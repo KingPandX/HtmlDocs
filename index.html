@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/javascript.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HtmlDocs</title>
+</head>
+
+<body>
+  <div id="app">
+    <button id="addButton">
+      +
+    </button>
+
+    <div class="inputContainer">
+      <div class="ButtonsSLContainer">
+        <button class="btn btn-primary BCon" id="Export">
+          Export
+        </button>
+        <button class="btn btn-primary BCon" id="SaveData">
+          Save
+        </button>
+      </div>
+      <input type="file" id="LoadData">
+    </div>
+
+    <div id="editor">
+      <div id="editorHTML"></div>
+      <div id="editorCSS"></div>
+    </div>
+
+    <style id="CSS">
+      :root {
+
+        /* page vars */
+        --Pw: 21cm;
+        --Ph: 29.7cm;
+        --Pmt: 1.5cm;
+        --Pmb: 1.5cm;
+        --Pml: 1.5cm;
+        --Pmr: 1.5cm;
+      }
+
+      /* page classes */
+
+      .pageContainer {
+        display: block;
+        overflow: auto;
+      }
+
+      .page {
+        background-color: white;
+        width: var(--Pw);
+        height: var(--Ph);
+        overflow: hidden;
+        margin: 10px 0px;
+        color: black;
+        line-height: 8pt;
+        position: relative;
+      }
+
+      .content {
+        overflow: hidden;
+        margin-top: var(--Pmt);
+        margin-bottom: var(--Pmb);
+        margin-left: var(--Pml);
+        margin-right: var(--Pmr);
+
+        height: calc(var(--Ph) - var(--Pmt) - var(--Pmb));
+        width: calc(var(--Pw) - var(--Pml) - var(--Pmr));
+      }
+
+      /* Add your css */
+    </style>
+
+    <main id="pageContainer">
+
+    </main>
+
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script type="module" src="/main.js"></script>
+</body>
+
+</html>
