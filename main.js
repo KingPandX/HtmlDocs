@@ -4,6 +4,25 @@
 import './style.css';
 import * as monaco from 'monaco-editor';
 
+/** 
+ * Import the Monaco Editor language configuration for HTML, CSS, and
+ */
+
+import HTMLWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker';
+import CSSWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker';
+
+window.MonacoEnvironment = {
+  getWorker(_, label) {
+    if (label === 'html' || label === 'handlebars' || label === 'razor') {
+      return new HTMLWorker();
+    }
+
+    if (label === 'css' || label === 'scss' || label === 'less') {
+      return new CSSWorker();
+    }
+  }
+}
+
 /**
  * Get the HTML editor element, CSS editor element, style element, and page container element.
  */
@@ -28,6 +47,7 @@ editorcss.setValue(StyleElement.innerHTML);
  */
 let pages = [];
 let actaulElement
+
 
 /**
  * Function to add a new page.
@@ -113,37 +133,6 @@ editorcss.onDidChangeModelContent(function () {
   StyleElement.innerHTML = editorcss.getValue();
 });
 
-/**
- * Set up the Monaco Editor environment for different languages.
- */
-self.MonacoEnvironment = {
-  getWorker: function (workerId, label) {
-    const getWorkerModule = (moduleUrl, label) => {
-      return new Worker(self.MonacoEnvironment.getWorkerUrl(moduleUrl), {
-        name: label,
-        type: 'module'
-      });
-    };
-
-    switch (label) {
-      case 'json':
-        return getWorkerModule('/monaco-editor/esm/vs/language/json/json.worker?worker', label);
-      case 'css':
-      case 'scss':
-      case 'less':
-        return getWorkerModule('/monaco-editor/esm/vs/language/css/css.worker?worker', label);
-      case 'html':
-      case 'handlebars':
-      case 'razor':
-        return getWorkerModule('/monaco-editor/esm/vs/language/html/html.worker?worker', label);
-      case 'typescript':
-      case 'javascript':
-        return getWorkerModule('/monaco-editor/esm/vs/language/typescript/ts.worker?worker', label);
-      default:
-        return getWorkerModule('/monaco-editor/esm/vs/editor/editor.worker?worker', label);
-    }
-  }
-};
 
 /**
  * Function to create a Monaco Editor instance.
