@@ -6,20 +6,19 @@
   <link rel="icon" type="image/svg+xml" href="/javascript.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HtmlDocs</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 </head>
 
 <body>
   <div id="app">
-    <button id="addButton">
-      +
-    </button>
+    <a class="btn-floating btn-large waves-effect waves-light red" id="addButton"><i class="material-icons">+</i></a>
 
     <div class="inputContainer">
       <div class="ButtonsSLContainer">
-        <button class="btn btn-primary BCon" id="Export">
+        <button class="waves-effect waves-light btn BCon" id="Export">
           Export
         </button>
-        <button class="btn btn-primary BCon" id="SaveData">
+        <button class="waves-effect waves-light btn BCon" id="SaveData">
           Save
         </button>
       </div>
@@ -80,7 +79,7 @@
     </main>
 
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script type="module" src="/main.js"></script>
 </body>
 

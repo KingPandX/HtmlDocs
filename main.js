@@ -109,6 +109,7 @@ AddPage();
 
 document.getElementById('addButton').addEventListener('click', function () {
   AddPage();
+  saveDataLocalStorage() 
 });
 
 /**
@@ -235,7 +236,8 @@ function saveData() {
  */
 function loadData(file) {
   pages = [];
-  const reader = new FileReader();
+  if (typeof(file) != 'string'){
+    const reader = new FileReader();
   reader.onload = function (event) {
     const jsonData = event.target.result;
     const data = JSON.parse(jsonData);
@@ -273,6 +275,42 @@ function loadData(file) {
     editorcss.setValue(data.style);
   };
   reader.readAsText(file);
+  }
+  else{
+    const data = JSON.parse(file);
+    pagesCont.innerHTML = '';
+    StyleElement.innerHTML = '';
+    data.pages.forEach(pageData => {
+      const element = document.createElement('div');
+      const elementCont = document.createElement('div');
+      const deleteButton = document.createElement('button');
+      deleteButton.innerHTML = 'Delete';
+      deleteButton.classList.add('deleteButton');
+      deleteButton.classList.add('btn');
+      deleteButton.addEventListener('click', function () {
+        element.remove();
+        pages.splice(pages.findIndex(page => page.id === pageData.id), 1);
+      });
+      element.appendChild(deleteButton);
+      element.classList.add('page');
+      element.id = `page${pageData.id}`;
+      elementCont.classList.add('content');
+      elementCont.innerHTML = pageData.content;
+      element.appendChild(elementCont);
+      pagesCont.appendChild(element);
+      const model = monaco.editor.createModel(elementCont.innerHTML, 'html');
+      const page = {
+        id: pageData.id,
+        element,
+        model,
+        content: elementCont
+      };
+      pages.push(page);
+      readPage();
+    });
+    StyleElement.innerHTML = data.style;
+    editorcss.setValue(data.style);
+  }
 }
 
 /**
@@ -290,3 +328,43 @@ document.getElementById('LoadData').addEventListener('change', function (event) 
   const file = event.target.files[0];
   loadData(file);
 });
+
+
+// Save the data on the local storage
+function saveDataLocalStorage() {
+  const data = {
+    pages: pages.map(page => ({
+      id: page.id,
+      content: page.content.innerHTML
+    })),
+    style: StyleElement.innerHTML
+  };
+  localStorage.setItem('data', JSON.stringify(data));
+  console.log('Data saved on the local storage');
+}
+
+// Load data from the local storage
+function loadDataLocalStorage(){
+  const data = localStorage.getItem('data');
+  loadData(data);
+  console.log('Data loaded from the local storage');
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  loadDataLocalStorage();
+});
+
+// every second save the data on the local storage
+setInterval(() => {
+  saveDataLocalStorage();
+}, 1000);
+
+// Format the clipboard data
+document.addEventListener('paste', function (e) {
+  e.clipboardData.items[0].getAsString(function (s) {
+    const model = editorhtml.getModel();
+    let data = model.getValue();
+    data += '\n' + s 
+    model.setValue(data);
+  });
+})
